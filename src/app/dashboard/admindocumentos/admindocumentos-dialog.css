@@ -1,0 +1,43 @@
+:host {
+  display: block;
+  background: #fff;
+  border-radius: 8px;
+  padding: 8px 16px 16px;
+}
+
+input {
+  margin: 8px 0;
+}
+
+button + button {
+  margin-left: 8px;
+}
+
+.area-detalhe{
+  background-color: #f1f1f1;
+  padding: 20px;
+  margin: auto;
+  width: 92%;
+}
+
+.area-usuario{
+  border: 1px solid #cccccc;
+}
+
+.tit-usuario{
+  text-align: center;
+  padding-top: 10px;
+}
+
+.usuario{
+  padding-left: 15px;
+}
+
+.botoes-dialog{
+  margin-top: 10px;
+}
+
+.popup-error{
+  padding: 30px;
+  text-align: center;
+}

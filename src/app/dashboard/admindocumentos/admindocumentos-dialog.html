@@ -1,0 +1,24 @@
+@if (data.mensagem == 'erroCliente') {
+  <div class="popup-error">
+    <h4>Selecione um cliente para filtrar.</h4>
+    <div class="botoes-dialog">
+      <button mat-flat-button color="primary" (click)="dialogRef.close(data.ok)">Ok</button>
+    </div>
+  </div>
+}
+@if (data.mensagem == 'excluirArquivo') {
+  <div class="popup-error">
+    <h4>Tem certeza que deseja excluir o arquivo?</h4>
+    <div class="botoes-dialog">
+      <button mat-flat-button color="primary" (click)="dialogRef.close(data.cancel)">Ok</button>
+    </div>
+  </div>
+}
+@if (data.mensagem == 'arquivoExluido') {
+  <div class="popup-error">
+    <h4>Arquivo excluido com sucesso.</h4>
+    <div class="botoes-dialog">
+      <button mat-flat-button color="primary" (click)="dialogRef.close(data.ok)">Ok</button>
+    </div>
+  </div>
+}

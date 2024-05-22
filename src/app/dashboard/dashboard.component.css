@@ -1,0 +1,59 @@
+section{
+  position: relative;
+  padding: 10px;
+}
+
+.grid-container {
+  margin: 20px;
+}
+
+.bg-color{
+  background-color:cornsilk
+}
+
+.campo{
+  width: 49%;
+  margin: .5%;
+}
+
+.botao{
+  margin: .5%;
+  padding: 10px;
+}
+
+.icon{
+  background-color:forestgreen;
+  padding: 10px;
+  border-radius: 20px;
+  color: cornsilk;
+}
+
+.dashboard-card {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+}
+
+.more-button {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+}
+
+.dashboard-card-content {
+  text-align: center;
+}
+
+.align-right{
+  position: absolute;
+  right: 7px;
+  top: 14px;
+  z-index: 10;
+}
+
+.example-header-image {
+  background-image: url('https://img.myloview.com.br/quadros/linha-de-empresa-de-advocacia-tendencia-icone-do-logotipo-design-juridico-universal-advogado-escala-o-simbolo-premium-criativo-700-141385580.jpg');
+  background-size: cover;
+}

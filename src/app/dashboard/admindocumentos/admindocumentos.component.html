@@ -1,0 +1,34 @@
+<mat-list>
+  <mat-card-header>
+    <div mat-card-avatar class="example-header-image"></div>
+    <mat-card-title>Excluir Cobranças / Documentos</mat-card-title>
+    <mat-card-subtitle>Todos os arquivos excluidos são excluídos por completo no banco de dados.</mat-card-subtitle>
+  </mat-card-header>
+  <mat-divider></mat-divider>
+  <div class="example-container">
+    <div class="area-upload">
+      <h4>Selecione de qual cliente gostaria de filtrar os arquivos</h4>
+      <mat-form-field class="select">
+        <mat-label>Selecionar cliente</mat-label>
+        <mat-select [(ngModel)]="usuariosSelecionado" name="clientes">
+          @for (usuario of clientes; track usuario) {
+            <mat-option [value]="usuario">{{usuario.razaoSocial}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <a mat-flat-button color="primary" (click)="onFileClick()">Filtrar</a>
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+  @for (arquivo of arquivos; track arquivo) {
+    <section>
+      <div matListItemTitle><strong>Nome do Arquivo: </strong>{{arquivo.nome}}</div>
+      <div matListItemLine><strong>Cliente: </strong>{{arquivo.cliente.razaoSocial}}</div>
+      <div matListItemLine><strong>Usuario: </strong>{{arquivo.usuario.nome}}</div>
+      <div matListItemLine><strong>Data de inclusão: </strong>{{arquivo.createdAt | date}}</div>
+      <div matListItemLine><strong>Categoria: </strong>{{arquivo.categoria.categoria}}</div>
+      <a mat-flat-button color="warn" class="align-right" (click)="excluirArquivo(arquivo.id)" target="_blank">Excluir</a>
+    </section>
+    <mat-divider></mat-divider>
+  }
+</mat-list>

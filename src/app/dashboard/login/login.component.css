@@ -1,0 +1,14 @@
+.container-login{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.example-card {
+  width: 80%;
+  margin-top: 10%;
+}
+
+.campo {
+  width: 100%;
+}

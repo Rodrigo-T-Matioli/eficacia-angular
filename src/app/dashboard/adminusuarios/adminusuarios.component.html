@@ -1,0 +1,61 @@
+<mat-list>
+  <mat-card-header>
+    <div mat-card-avatar class="example-header-image"></div>
+    <mat-card-title>Administrar usuário</mat-card-title>
+    <mat-card-subtitle>Excluir usuários ou asociar a um cliente.</mat-card-subtitle>
+  </mat-card-header>
+  <mat-tab-group>
+    <mat-tab label="Usuários">
+      @for (usuario of usuariosPrincipal; track usuario) {
+        <section>
+          <div matListItemTitle>{{usuario.nome}}</div>
+          <div matListItemLine>{{usuario.email}}</div>
+          @if (usuario.status == 'A') {
+            <a mat-flat-button color="warn" class="align-right" (click)="desativarUsuario(usuario.id)" target="_blank">Desativar Usuário</a>
+          }
+          @if (usuario.status == 'I') {
+            <a mat-flat-button color="primary" class="align-right" (click)="ativarUsuario(usuario.id)" target="_blank">Ativar Usuário</a>
+          }
+        </section>
+        <mat-divider></mat-divider>
+      }
+    </mat-tab>
+    <mat-tab label="Associar cliente ao usuário">
+      <div class="example-container">
+        <h4>Selecione o cliente</h4>
+        <mat-form-field class="select">
+          <mat-label>Selecionar cliente</mat-label>
+          <mat-select [(ngModel)]="clientesSelecionado" name="clientes">
+            @for (usuario of clientes; track usuario) {
+              <mat-option [value]="usuario">{{usuario.razaoSocial}}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <h4>Selecione o usuário</h4>
+        <mat-form-field class="select">
+          <mat-label>Selecionar usuario</mat-label>
+          <mat-select [(ngModel)]="usuariosSelecionado" name="clientes">
+            @for (usuario of usuarios; track usuario) {
+              <mat-option [value]="usuario">{{usuario.id}} - {{usuario.nome}}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <button mat-raised-button color="primary" class="botao" (click)="onAssocCliente()">Associar Cliente ao Usuário</button>
+    </mat-tab>
+    <mat-tab label="Desassociar cliente ao usuário">
+      <h4>Selecione o cliente</h4>
+        <mat-form-field class="select">
+          <mat-label>Selecionar cliente</mat-label>
+          <mat-select [(ngModel)]="clientesSelecionadoDesassociar" name="clientes" (ngModelChange)="changeClienteValue()">
+            @for (usuario of clientes; track usuario) {
+              <mat-option [value]="usuario">{{usuario.razaoSocial}}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        @for (usuario of usuarioDesassociar; track usuario) {
+          <p>{{usuario.id}}</p>
+        }
+    </mat-tab>
+  </mat-tab-group>
+</mat-list>

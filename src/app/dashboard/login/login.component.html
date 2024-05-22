@@ -1,0 +1,21 @@
+<div class="container-login">
+  <mat-card  class="example-card">
+    <mat-card-header>
+      <mat-card-title>Login</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-form-field appearance="fill" class="campo">
+        <mat-label>E-mail</mat-label>
+        <input matInput placeholder="E-mail" [(ngModel)]="login.username" required>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="campo">
+        <mat-label>Senha</mat-label>
+        <input matInput placeholder="Senha" [type]="hide ? 'password' : 'text'" [(ngModel)]="login.password" required>
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button  color="primary" (click)="onSubmit()">Logar</button>
+      <a mat-button href="/cadastrar">Cadatrar</a>
+    </mat-card-actions>
+  </mat-card>
+</div>

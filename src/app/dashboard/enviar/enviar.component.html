@@ -1,0 +1,55 @@
+<mat-card class="dashboard-card">
+  <mat-card-header>
+    <div mat-card-avatar class="example-header-image"></div>
+    <mat-card-title>Enviar Documento</mat-card-title>
+    <mat-card-subtitle>Tipos de arquivos (JPG - PNG - DOC - PDF)</mat-card-subtitle>
+    <mat-card-subtitle>Tamanho máximo 100MG</mat-card-subtitle>
+  </mat-card-header>
+  <div class="example-container">
+    <div class="area-upload">
+      <h4>Selecione para qual cliente / usuários enviar o arquivo</h4>
+      <mat-form-field class="select">
+        <mat-label>Selecionar cliente</mat-label>
+        <mat-select [(ngModel)]="usuariosSelecionado" name="usuarios" multiple>
+          @for (usuario of usuarios; track usuario) {
+            <mat-option [value]="usuario">{{usuario.cliente.razaoSocial}} - {{usuario.nome}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="area-arquivo">
+      <div>
+        <h4>Nome do arquivo</h4>
+        <mat-form-field appearance="fill" class="campo">
+          <mat-label>Nome do arquivo</mat-label>
+          <input matInput placeholder="Nome do arquivo" [value]="fileNameValue" (change)="changeFileNameValue($event)">
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field class="select">
+          <mat-label>Selecionar a categoria</mat-label>
+          <mat-select [(ngModel)]="categoriasSelecionada" name="categorias">
+            @for (categoria of categorias; track categoria) {
+              <mat-option [value]="categoria">{{categoria.categoria}}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div>
+        <input type="file" class="file-input"
+        (change)="onFileSelected($event)" #fileUpload>
+
+        <div class="file-upload">
+
+          {{fileName || "Nenhum arquivo enviado."}}
+
+            <button mat-mini-fab color="primary" class="upload-btn"
+              (click)="fileUpload.click()">
+                <mat-icon>attach_file</mat-icon>
+            </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button mat-raised-button color="primary" class="botao" (click)="onFileClick()">Enviar</button>
+</mat-card>

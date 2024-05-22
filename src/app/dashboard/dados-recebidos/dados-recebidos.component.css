@@ -1,0 +1,14 @@
+section{
+  position: relative;
+  padding: 10px;
+}
+.align-right{
+  position: absolute;
+  right: 0;
+  top: 12px;
+}
+
+.example-header-image {
+  background-image: url('https://img.myloview.com.br/quadros/linha-de-empresa-de-advocacia-tendencia-icone-do-logotipo-design-juridico-universal-advogado-escala-o-simbolo-premium-criativo-700-141385580.jpg');
+  background-size: cover;
+}

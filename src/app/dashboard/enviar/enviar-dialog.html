@@ -1,0 +1,81 @@
+@if (data.mensagem == 'erroClienteUsuario') {
+  <div class="popup-error">
+    <h4>Selecione um cliente / usuário para enviar o arquivo.</h4>
+    <div class="botoes-dialog">
+      <button mat-flat-button color="primary" (click)="dialogRef.close(data.cancel)">Ok</button>
+    </div>
+  </div>
+}
+@if (data.mensagem == 'erroArquivo') {
+  <div class="popup-error">
+    <h4>Selecione um arquivo.</h4>
+    <div class="botoes-dialog">
+      <button mat-flat-button color="primary" (click)="dialogRef.close(data.cancel)">Ok</button>
+    </div>
+  </div>
+}
+@if (data.mensagem == 'erroNome') {
+  <div class="popup-error">
+    <h4>Insira o nome do arquivo que aparecerá para o cliente.</h4>
+    <div class="botoes-dialog">
+      <button mat-flat-button color="primary" (click)="dialogRef.close(data.cancel)">Ok</button>
+    </div>
+  </div>
+}
+@if (data.mensagem == 'erroCategoria') {
+  <div class="popup-error">
+    <h4>Insira a categoria que aparecerá o arquivo no menu do cliente.</h4>
+    <div class="botoes-dialog">
+      <button mat-flat-button color="primary" (click)="dialogRef.close(data.cancel)">Ok</button>
+    </div>
+  </div>
+}
+@if (data.mensagem == 'erroClienteUnico') {
+  <div class="popup-error">
+    <h4>Só é possível enviar arquivo para um único cliente e seus usuários</h4>
+    <div class="botoes-dialog">
+      <button mat-flat-button color="primary" (click)="dialogRef.close(data.cancel)">Ok</button>
+    </div>
+  </div>
+}
+@if (data.mensagem == 'correto') {
+  <h1>Detalhes da transação</h1>
+  <div class="area-detalhe">
+    <div>
+      <h3>Veja abaixo se o cliente e usuário(s) estão corretos.</h3>
+    </div>
+    <div>
+      <label><strong>Cliente: </strong>{{data.clienteRazao}}</label>
+    </div>
+    <hr />
+    <div>
+      <label><strong>Categoria: </strong>{{data.categoria}}</label>
+    </div>
+    <hr />
+    <div class="area-usuario">
+      <div class="tit-usuario">
+        <label><strong>Usuários:</strong></label>
+      </div>
+      <hr />
+      @for (usuario of data.usuariosEnviados; track usuario) {
+        <section class="usuario">
+          <div matListItemLine>{{usuario.nome}}</div>
+        </section>
+        <hr />
+      }
+    </div>
+    <hr />
+    <div>
+      <label><strong>Nome do Arquivo do computador: </strong>{{data.fileName}}</label>
+    </div>
+    <hr />
+    <div>
+      <label><strong>Nome do Arquivo para o usuário: </strong>{{data.fileNameValue}}</label>
+    </div>
+  </div>
+  <div class="botoes-dialog">
+    <button mat-flat-button color="primary" (click)="dialogRef.close(data.ok)">OK</button>
+    <button mat-flat-button color="warn" (click)="dialogRef.close(data.cancel)">Cancel</button>
+  </div>
+}
+

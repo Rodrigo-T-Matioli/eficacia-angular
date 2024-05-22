@@ -1,0 +1,24 @@
+.container-login{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.example-card {
+  width: 80%;
+  margin-top: 10%;
+}
+
+.campo {
+  width: 48%;
+  margin: 0% 1%;
+}
+
+.campoCompleto {
+  width: 98%;
+  margin: 0% 1%;
+}
+
+.btnCadastrar{
+  margin: auto;
+}

@@ -1,0 +1,39 @@
+<div class="container-login">
+  <mat-card  class="example-card">
+    <mat-card-header>
+      <mat-card-title>Cadastro</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div>
+        <mat-form-field appearance="fill" class="campo">
+          <mat-label>Nome</mat-label>
+          <input matInput placeholder="Nome" [(ngModel)]="cadastro.nome" required>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="campo">
+          <mat-label>Email</mat-label>
+          <input matInput placeholder="E-mail" [(ngModel)]="cadastro.email" required>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="fill" class="campo">
+          <mat-label>Endereco</mat-label>
+          <input matInput placeholder="Endereco" [(ngModel)]="cadastro.endereco" required>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="campo">
+          <mat-label>Telefone</mat-label>
+          <input matInput placeholder="Telefone" [(ngModel)]="cadastro.telefone" required>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field appearance="fill" class="campoCompleto">
+          <mat-label>Senha</mat-label>
+          <input matInput placeholder="Senha" [(ngModel)]="cadastro.senha" required>
+          <mat-hint>A senha deve conter 8 carascteres, sendo pelo menos uma letra maiúscula, um número e um carater especial. Exemplo de senha: Ed1!ardo</mat-hint>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button  color="primary" class="btnCadastrar" (click)="onSubmit()">Cadastrar</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

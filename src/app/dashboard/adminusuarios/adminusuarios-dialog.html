@@ -1,0 +1,16 @@
+@if (data.mensagem == 'faltaCliente') {
+  <div class="popup-error">
+    <h4>Informe o cliente para associar ao usuário.</h4>
+    <div class="botoes-dialog">
+      <button mat-flat-button color="primary" (click)="dialogRef.close(data.ok)">Ok</button>
+    </div>
+  </div>
+}
+@if (data.mensagem == 'faltaUsuario') {
+  <div class="popup-error">
+    <h4>Informe o usuário a ser associado.</h4>
+    <div class="botoes-dialog">
+      <button mat-flat-button color="primary" (click)="dialogRef.close(data.cancel)">Ok</button>
+    </div>
+  </div>
+}

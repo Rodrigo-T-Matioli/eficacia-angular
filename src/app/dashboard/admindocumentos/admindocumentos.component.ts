@@ -12,6 +12,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { ArquivosService } from '../arquivos/arquivos.service';
 import { AuthService } from '../auth/auth.service';
+import { ClientesService } from '../clientes/clientes.service';
 import { UsuarioService } from '../usuario/usuario.service';
 
 export interface DialogData {
@@ -73,37 +74,24 @@ export class AdmindocumentosComponent {
     private arquivosService: ArquivosService,
     private usuarioService: UsuarioService,
     private authService: AuthService,
+    private clientesService: ClientesService,
     public dialog: Dialog
   ) { }
 
   ngOnInit(): void {
-    this.carregarUsuario();
+    this.buscarClientes();
     this.cargarArquivos()
   }
 
-  carregarUsuario(): void {
-    const user = this.authService.getUser();
-    if (user) {
-        this.usuarioService.buscarUsuarios().then(
-            (data) => {
-                for (let arq of data){
-                  if (arq.cliente && arq.cliente.razaoSocial){
-                    this.clientes.push(arq.cliente);
-                  }
-                }
-                const setCliente = new Set();
-                const filterCliente = this.clientes.filter((cliente) => {
-                  const duplicatedCliente = setCliente.has(cliente.id);
-                  setCliente.add(cliente.id);
-                  return !duplicatedCliente;
-                });
-                this.clientes = filterCliente;
-            },
-            err => {
-                console.log(err);
-            }
-        );
-    }
+  buscarClientes() {
+    this.clientesService.buscarClientes().then(
+      (data: any) => {
+          this.clientes = data;
+      },
+      err => {
+          console.log(err);
+      }
+  );
   }
 
   cargarArquivos(): void {

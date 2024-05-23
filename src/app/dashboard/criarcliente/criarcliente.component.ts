@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
+import { MatTabsModule } from '@angular/material/tabs';
 import { environment } from '../../environments/environments';
 
 export interface DialogData {
@@ -22,6 +23,7 @@ export interface DialogData {
   imports: [
     MatListModule,
     MatCardModule,
+    MatTabsModule,
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,

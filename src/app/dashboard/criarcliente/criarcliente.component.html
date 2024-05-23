@@ -4,15 +4,22 @@
     <mat-card-title>Criar um cliente</mat-card-title>
     <mat-card-subtitle>Insira as informações do formulário abaixo para criar um novo cliente.</mat-card-subtitle>
   </mat-card-header>
-  <div class="example-container">
-    <mat-form-field appearance="fill" class="campo">
-      <mat-label>Razão Social</mat-label>
-      <input matInput placeholder="Razão Social" value="{{cliente.razaoSocial}}" (change)="changeRazaoSocialValue($event)">
-    </mat-form-field>
-    <mat-form-field appearance="fill" class="campo">
-      <mat-label>Endereço</mat-label>
-      <input matInput placeholder="Endereço" value="{{cliente.endereco}}" (change)="changeEnderecoValue($event)">
-    </mat-form-field>
-  </div>
-  <button mat-raised-button color="primary" class="botao" (click)="onCriarCliente()">Criar Cliente</button>
+  <mat-tab-group>
+    <mat-tab label="Criar Cliente">
+      <div class="example-container">
+        <mat-form-field appearance="fill" class="campo">
+          <mat-label>Razão Social</mat-label>
+          <input matInput placeholder="Razão Social" value="{{cliente.razaoSocial}}" (change)="changeRazaoSocialValue($event)">
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="campo">
+          <mat-label>Endereço</mat-label>
+          <input matInput placeholder="Endereço" value="{{cliente.endereco}}" (change)="changeEnderecoValue($event)">
+        </mat-form-field>
+      </div>
+      <button mat-raised-button color="primary" class="botao" (click)="onCriarCliente()">Criar Cliente</button>
+    </mat-tab>
+    <mat-tab label="Consultar Cliente">
+      <p>Em desenvolvimento</p>
+    </mat-tab>
+  </mat-tab-group>
 </mat-list>

@@ -1,5 +1,6 @@
 <div class="grid-container">
   <mat-grid-list cols="2" rowHeight="300px">
+    @if (usuario) {
     <mat-grid-tile colspan="1" rowspan="1">
       <mat-card class="dashboard-card">
         <mat-card-header>
@@ -70,5 +71,6 @@
         <button mat-raised-button color="primary" class="botao">Salvar</button>
       </mat-card>
     </mat-grid-tile>
+    }
   </mat-grid-list>
 </div>

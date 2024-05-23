@@ -42,6 +42,7 @@ export class DashboardComponent implements OnInit {
   // private breakpointObserver = inject(BreakpointObserver);
   arquivosDocumentos: any;
   arquivosCobrancas: any;
+  getUsuario: any;
   usuarioId: any;
   usuario = {
     nome: '',
@@ -57,13 +58,17 @@ export class DashboardComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
+    this.getUser()
+  }
+
+  getUser(): void {
+    this.getUsuario = this.authService.getUser();
     this.cargarUsuario()
   }
 
   cargarUsuario(): void {
-    const user = this.authService.getUser();
-    if (user) {
-        this.usuarioService.buscarUsuario(user.id).then(
+    if (this.getUsuario) {
+        this.usuarioService.buscarUsuario(this.getUsuario.id).then(
             (data) => {
                 this.usuario = data;
                 this.usuarioId = data.id;

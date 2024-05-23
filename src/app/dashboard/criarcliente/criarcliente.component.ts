@@ -1,15 +1,17 @@
 import { DIALOG_DATA, Dialog, DialogRef } from '@angular/cdk/dialog';
 import { HttpClient } from '@angular/common/http';
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatTabsModule } from '@angular/material/tabs';
 import { environment } from '../../environments/environments';
+import { ClientesService } from '../clientes/clientes.service';
 
 export interface DialogData {
   mensagem: string,
@@ -27,12 +29,14 @@ export interface DialogData {
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
+    MatDividerModule,
     MatButtonModule
   ],
   templateUrl: './criarcliente.component.html',
   styleUrl: './criarcliente.component.css'
 })
-export class CriarclienteComponent {
+export class CriarclienteComponent implements OnInit {
+  clientesConsulta: any;
   cliente = {
     razaoSocial: '',
     endereco: ''
@@ -41,8 +45,13 @@ export class CriarclienteComponent {
 
   constructor(
     private http: HttpClient,
-    public dialog: Dialog
+    public dialog: Dialog,
+    private clientesService: ClientesService,
     ) { }
+
+  ngOnInit(): void {
+    this.buscarClientes();
+  }
 
   changeRazaoSocialValue(e: any) {
     this.cliente.razaoSocial = e.target.value;
@@ -50,6 +59,17 @@ export class CriarclienteComponent {
 
   changeEnderecoValue(e: any) {
     this.cliente.endereco = e.target.value;
+  }
+
+  buscarClientes() {
+    this.clientesService.buscarClientes().then(
+      (data) => {
+          this.clientesConsulta = data;
+      },
+      err => {
+          console.log(err);
+      }
+  );
   }
 
   onCriarCliente() {

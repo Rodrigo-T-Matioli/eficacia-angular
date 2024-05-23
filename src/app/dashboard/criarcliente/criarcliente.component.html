@@ -19,7 +19,13 @@
       <button mat-raised-button color="primary" class="botao" (click)="onCriarCliente()">Criar Cliente</button>
     </mat-tab>
     <mat-tab label="Consultar Cliente">
-      <p>Em desenvolvimento</p>
+      @for (cliente of clientesConsulta; track cliente) {
+        <section>
+          <div matListItemTitle>{{cliente.razaoSocial}}</div>
+          <div matListItemLine>{{cliente.endereco}}</div>
+        </section>
+        <mat-divider></mat-divider>
+      }
     </mat-tab>
   </mat-tab-group>
 </mat-list>

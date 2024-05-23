@@ -12,6 +12,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { environment } from '../../environments/environments';
 import { AuthService } from '../auth/auth.service';
+import { ClientesService } from '../clientes/clientes.service';
 import { UsuarioService } from '../usuario/usuario.service';
 
 export interface DialogData {
@@ -70,6 +71,7 @@ export class AdminusuariosComponent {
 
   constructor(
     private usuarioService: UsuarioService,
+    private clientesService: ClientesService,
     private authService: AuthService,
     private http: HttpClient,
     public dialog: Dialog
@@ -77,6 +79,18 @@ export class AdminusuariosComponent {
 
   ngOnInit(): void {
     this.carregarUsuario();
+    this.carregarCliente();
+  }
+
+  carregarCliente(): void {
+    this.clientesService.buscarClientes().then(
+      (data:any) => {
+        this.clientes = data
+      },
+      err => {
+          console.log(err);
+      }
+    )
   }
 
   carregarUsuario(): void {
@@ -88,19 +102,19 @@ export class AdminusuariosComponent {
               this.usuariosPrincipal = data;
                 for (let arq of data){
                   if (arq.cliente && arq.cliente.razaoSocial){
-                    this.clientes.push(arq.cliente);
+                    // this.clientes.push(arq.cliente);
                   } else {
                     this.usuarios.push({id: arq.id, nome: arq.nome, email: arq.email, status: arq.status})
                   }
                 }
-                const setCliente = new Set();
-                const filterCliente = this.clientes.filter((cliente) => {
-                  const duplicatedCliente = setCliente.has(cliente.id);
-                  setCliente.add(cliente.id);
-                  return !duplicatedCliente;
-                });
-                this.clientes = filterCliente;
-                console.log('Usuários: ', this.usuarios);
+                // const setCliente = new Set();
+                // const filterCliente = this.clientes.filter((cliente) => {
+                //   const duplicatedCliente = setCliente.has(cliente.id);
+                //   setCliente.add(cliente.id);
+                //   return !duplicatedCliente;
+                // });
+                // this.clientes = filterCliente;
+                // console.log('Usuários: ', this.usuarios);
             },
             err => {
                 console.log(err);

@@ -1,5 +1,6 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
@@ -43,6 +44,7 @@ export class DashboardComponent implements OnInit {
   arquivosDocumentos: any;
   arquivosCobrancas: any;
   getUsuario: any;
+  myField = new FormControl<string>('');
   usuarioId: any;
   usuario = {
     nome: '',
@@ -58,12 +60,14 @@ export class DashboardComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
+    this.getUsuario = this.authService.getUser();
     this.getUser()
   }
 
-  getUser(): void {
-    this.getUsuario = this.authService.getUser();
-    this.cargarUsuario()
+  async getUser() {
+    if (this.getUsuario) {
+      this.cargarUsuario();
+    }
   }
 
   cargarUsuario(): void {

@@ -27,13 +27,7 @@ import { UsuarioService } from '../dashboard/usuario/usuario.service';
 })
 export class MenuComponent {
   private breakpointObserver = inject(BreakpointObserver);
-  usuario = {
-    nome: '',
-    email: '',
-    endereco: '',
-    telefone: '',
-    tipo: ''
-  }
+  usuario: any;
 
   constructor(
     private authService: AuthService,
@@ -47,23 +41,24 @@ export class MenuComponent {
     );
 
   ngOnInit(): void {
-    this.cargarUsuario()
+    this.usuario = this.authService.getUser();
+    // this.cargarUsuario()
   }
 
-  cargarUsuario(): void {
-    const user = this.authService.getUser();
-    if (user) {
-        this.usuarioService.buscarUsuario(user.id).then(
-            (data) => {
-                this.usuario = data;
-                console.log('Usuario: ', this.usuario);
-            },
-            err => {
-                console.log(err);
-            }
-        );
-    }
-  }
+  // cargarUsuario(): void {
+  //   const user = this.authService.getUser();
+  //   if (user) {
+  //       this.usuarioService.buscarUsuario(user.id).then(
+  //           (data) => {
+  //               this.usuario = data;
+  //               console.log('Usuario: ', this.usuario);
+  //           },
+  //           err => {
+  //               console.log(err);
+  //           }
+  //       );
+  //   }
+  // }
 
   sair = (e:any) => {
     window.localStorage.removeItem('token');

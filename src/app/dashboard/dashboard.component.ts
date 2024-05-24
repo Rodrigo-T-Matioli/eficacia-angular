@@ -43,7 +43,12 @@ export class DashboardComponent implements OnInit {
   arquivosDocumentos: any;
   arquivosCobrancas: any;
   usuarioId: any;
-  usuario: any;
+  usuario = {
+    nome: '',
+    email: '',
+    endereco: '',
+    telefone: ''
+  }
 
   constructor(
     private authService: AuthService,
@@ -52,25 +57,24 @@ export class DashboardComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    this.usuario = this.authService.getUser();
-    this.usuarioId = this.usuario.id;
+    this.cargarUsuario()
   }
 
-  // cargarUsuario(): void {
-  //   const user = this.authService.getUser();
-  //   if (user) {
-  //       this.usuarioService.buscarUsuario(user.id).then(
-  //           (data) => {
-  //               this.usuario = data;
-  //               this.usuarioId = data.id;
-  //               this.cargarArquivos(this.usuarioId)
-  //           },
-  //           err => {
-  //               console.log(err);
-  //           }
-  //       );
-  //   }
-  // }
+  cargarUsuario(): void {
+    const user = this.authService.getUser();
+    if (user) {
+        this.usuarioService.buscarUsuario(user.id).then(
+            (data) => {
+                this.usuario = data;
+                this.usuarioId = data.id;
+                this.cargarArquivos(this.usuarioId)
+            },
+            err => {
+                console.log(err);
+            }
+        );
+    }
+  }
 
   cargarArquivos(id: number): void {
     let documentos: any = [{

@@ -62,7 +62,7 @@ export class AuthService {
     return refresh;
   }
 
-  getUser() {
+  async getUser() {
     const token = this.getAuthorizationToken();
     if (token) {
         const payload = jwtDecode(token);

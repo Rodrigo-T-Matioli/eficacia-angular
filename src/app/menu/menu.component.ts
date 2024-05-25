@@ -47,22 +47,25 @@ export class MenuComponent {
     );
 
   ngOnInit(): void {
-    this.cargarUsuario()
+    this.carregarUsuario()
   }
 
-  cargarUsuario(): void {
-    const user = this.authService.getUser();
-    if (user) {
-        this.usuarioService.buscarUsuario(user.id).then(
-            (data) => {
-                this.usuario = data;
-                console.log('Usuario: ', this.usuario);
-            },
-            err => {
-                console.log(err);
-            }
-        );
-    }
+  carregarUsuario(): void {
+    this.authService.getUser().then(
+      (data: any) => {
+        this.usuarioService.buscarUsuario(data.id).then(
+          (data) => {
+              this.usuario = data;
+          },
+          err => {
+              console.log(err);
+          }
+      );
+      },
+      err => {
+          console.log(err);
+      }
+    );
   }
 
   sair = (e:any) => {

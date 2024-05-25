@@ -61,19 +61,23 @@ export class DashboardComponent implements OnInit {
   }
 
   cargarUsuario(): void {
-    const user = this.authService.getUser();
-    if (user) {
-        this.usuarioService.buscarUsuario(user.id).then(
-            (data) => {
-                this.usuario = data;
-                this.usuarioId = data.id;
-                this.cargarArquivos(this.usuarioId)
-            },
-            err => {
-                console.log(err);
-            }
-        );
-    }
+    this.authService.getUser().then(
+      (data: any) => {
+        this.usuarioService.buscarUsuario(data.id).then(
+          (data) => {
+              this.usuario = data;
+              this.usuarioId = data.id;
+              this.cargarArquivos(this.usuarioId)
+          },
+          err => {
+              console.log(err);
+          }
+      );
+      },
+      err => {
+          console.log(err);
+      }
+    );
   }
 
   cargarArquivos(id: number): void {

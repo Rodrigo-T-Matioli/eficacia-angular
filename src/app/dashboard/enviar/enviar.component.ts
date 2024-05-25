@@ -112,17 +112,21 @@ export class EnviarComponent {
   }
 
   carregarUsuario(): void {
-    const user = this.authService.getUser();
-    if (user) {
-        this.usuarioService.buscarUsuarios().then(
-            (data) => {
-                this.usuarios = data;
-            },
-            err => {
-                console.log(err);
-            }
-        );
-    }
+    this.authService.getUser().then(
+      (data: any) => {
+        this.usuarioService.buscarUsuario(data.id).then(
+          (data) => {
+              this.usuarios = data;
+          },
+          err => {
+              console.log(err);
+          }
+      );
+      },
+      err => {
+          console.log(err);
+      }
+    );
   }
 
   carregarCategoria(): void {

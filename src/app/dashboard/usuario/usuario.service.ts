@@ -14,7 +14,7 @@ export class UsuarioService {
     return result;
   }
 
-  buscarUsuario(idUser: any) {
+  async buscarUsuario(idUser: any) {
     const result = this.http.get<any>(`${environment.api}/usuarios/${idUser}`).toPromise();
     return result;
   }

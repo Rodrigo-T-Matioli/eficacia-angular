@@ -13,6 +13,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { environment } from '../../environments/environments';
 import { AuthService } from '../auth/auth.service';
 import { CategoriaService } from '../categoria/categoria.service';
+import { ClientesService } from '../clientes/clientes.service';
 import { UsuarioService } from '../usuario/usuario.service';
 
 export interface DialogData {
@@ -90,12 +91,13 @@ export class EnviarComponent {
   file: any;
   fileNameValue: any = '';
   fileNameBackEnd: string = '';
-  usuariosSelecionado: UsuariosSelecionados[] = [];
+  clienteSelecionado: UsuariosSelecionados[] = [];
   usuariosEnviados: object[] = [];
+  clientes: Cliente[] = [];
   cliente: Cliente[] = [];
   clienteId: Number | undefined;
   clienteRazao: String | undefined;
-  usuarios: Usuario[] = [];
+  usuarios: any[] = [];
   categorias: any = null;
   categoriasSelecionada: any = undefined;
   mensagem: string = '';
@@ -104,29 +106,31 @@ export class EnviarComponent {
     private authService: AuthService,
     private usuarioService: UsuarioService,
     private categoriaService: CategoriaService,
+    private clientesService: ClientesService,
     public dialog: Dialog) {}
 
   ngOnInit(): void {
-    this.carregarUsuario();
+    this.buscarClientes();
     this.carregarCategoria();
   }
 
-  carregarUsuario(): void {
-    this.authService.getUser().then(
+  buscarClientes() {
+    this.clientesService.buscarClientes().then(
       (data: any) => {
-        this.usuarioService.buscarUsuario(data.id).then(
-          (data) => {
-              this.usuarios = data;
-          },
-          err => {
-              console.log(err);
-          }
-      );
+        if (data) {
+          this.clientes = data.map((item: any) => {
+            const newItem = {
+              id: item.id,
+              razaoSocial: item.razaoSocial
+            };
+            return newItem;
+          });
+        }
       },
       err => {
           console.log(err);
       }
-    );
+  );
   }
 
   carregarCategoria(): void {
@@ -161,66 +165,37 @@ export class EnviarComponent {
   }
 
   onFileClick() {
-    if (this.usuariosSelecionado.length) {
+    if (this.clienteSelecionado.hasOwnProperty('id')) {
       if (this.fileNameValue != '') {
         if (this.categoriasSelecionada) {
+
           if (this.file) {
-            for (const usuario of this.usuariosSelecionado) {
-              if (usuario && usuario.cliente) {
-                  this.cliente.push(usuario.cliente)
+            let clienteRazoes =  Object.values(this.clienteSelecionado)[1];
+            let clienteId = Object.values(this.clienteSelecionado)[0];
+            console.log('clienteRazoes: ', clienteRazoes);
+            console.log('clienteId: ', clienteId);
+            //Pega os usuarios selecionados
+            const usuarios = this.usuarioService.buscarUsuarios().then(
+              (data) => {
+                console.log('DATA: ', data)
+                this.usuariosEnviados = data;
+                  for (let arq of data){
+                    if (arq && arq.cliente && clienteId === arq.cliente.id){
+                      this.usuarios.push({id: arq.id, nome: arq.nome, email: arq.email})
+                    }
+                  }
+                console.log('Usuarios: ', this.usuarios)
+              },
+              err => {
+                  console.log(err);
               }
-            }
-
-            //Pega os clientes selecionados
-            let clientes = this.cliente.map((item) => {
-              const newItem = {
-                id: item.id,
-                razaoSocial: item.razaoSocial,
-              };
-              return newItem;
-            });
-            //Transforma em array os ids de clientes
-            let clienteIds = clientes.map( cliente => `${cliente.id}`);
-            //Tira os Ids repetidos
-            let setIds = new Set(clienteIds);
-            //Transforma o SET em array
-            let clienteId = Array.from(setIds);
-
-            let clienteRazoes = clientes.map( cliente => `${cliente.razaoSocial}`);
-            let setRazao = new Set(clienteRazoes);
-            let clienteRazao = Array.from(setRazao);
-
-            if (clienteId.length && clienteId.length < 2) {
-              this.clienteId = Number(clienteId.toString())
-              this.clienteRazao = clienteRazao.toString()
-              console.log('Id Cliente 2: ', this.clienteId);
-              console.log('Razão Social 2: ', this.clienteRazao);
-              //Pega os usuarios selecionados
-              const usuarios = this.usuariosSelecionado.map((item) => {
-                const newItem = {
-                  id: item.id,
-                  nome: item.nome,
-                };
-                return newItem;
-              });
-              const usuariosArray = Object.values(usuarios);
-              this.usuariosEnviados = usuariosArray;
-              console.log('this.usuariosSelecionado: ', this.usuariosSelecionado);
-              console.log('this.usuariosEnviados: ', this.usuariosEnviados);
-              this.mensagem = 'correto';
-              this.openDialog();
-            } else {
-              this.mensagem = 'erroClienteUnico';
-              this.openDialog();
-              this.cliente = [];
-              clientes = [];
-              clienteIds = [];
-              setIds.delete;
-              clienteId = [];
-              clienteRazoes = [];
-              setRazao.delete;
-              clienteRazao = [];
-            }
+            );
+            const usuariosArray = this.clienteSelecionado;
+            this.usuariosEnviados = usuariosArray;
+            console.log('this.usuariosSelecionado: ', this.clienteSelecionado);
+            console.log('this.usuariosEnviados: ', this.usuariosEnviados);
+            this.mensagem = 'correto';
+            this.openDialog();
           } else {
             this.mensagem = 'erroArquivo';
             this.openDialog();
@@ -268,7 +243,7 @@ export class EnviarComponent {
         const upload$ = this.http.post<UploadResponse>(`${environment.api}/uploads`, formData);
         upload$.subscribe((response) => {
           console.log('response: ', response);
-          for (const usuario of this.usuariosSelecionado) {
+          for (const usuario of this.clienteSelecionado) {
             const dadosArquivo = {
               nome: this.fileNameValue,
               arquivo_completo: response.path,

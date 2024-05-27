@@ -27,6 +27,7 @@ import { UsuarioService } from '../dashboard/usuario/usuario.service';
 })
 export class MenuComponent {
   private breakpointObserver = inject(BreakpointObserver);
+  usuarioId: any = undefined
   usuario = {
     nome: '',
     email: '',
@@ -50,22 +51,30 @@ export class MenuComponent {
     this.carregarUsuario()
   }
 
-  carregarUsuario(): void {
-    this.authService.getUser().then(
+  async carregarUsuario() {
+    await this.authService.getUser().then(
       (data: any) => {
-        this.usuarioService.buscarUsuario(data.id).then(
-          (data) => {
-              this.usuario = data;
-          },
-          err => {
-              console.log(err);
-          }
-      );
+        if (data) {
+          this.usuarioId = data.id;
+          this.buscarUsuario(data);
+        }
       },
       err => {
           console.log(err);
       }
     );
+  }
+
+  async buscarUsuario( data: any ) {
+    await this.usuarioService.buscarUsuario(data.id).then(
+      (data) => {
+        this.usuarioId = data.id;
+        this.usuario = data;
+      },
+      err => {
+          console.log(err);
+      }
+  );
   }
 
   sair = (e:any) => {

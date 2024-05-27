@@ -14,3 +14,11 @@
     </div>
   </div>
 }
+@if (data.mensagem == 'associado') {
+  <div class="popup-error">
+    <h4>Associação realizada com sucesso.</h4>
+    <div class="botoes-dialog">
+      <button mat-flat-button color="primary" (click)="dialogRef.close(data.cancel)">Ok</button>
+    </div>
+  </div>
+}

@@ -1,6 +1,6 @@
 @if (data.mensagem == 'erroClienteUsuario') {
   <div class="popup-error">
-    <h4>Selecione um cliente / usuário para enviar o arquivo.</h4>
+    <h4>Selecione um cliente.</h4>
     <div class="botoes-dialog">
       <button mat-flat-button color="primary" (click)="dialogRef.close(data.cancel)">Ok</button>
     </div>
@@ -25,14 +25,6 @@
 @if (data.mensagem == 'erroCategoria') {
   <div class="popup-error">
     <h4>Insira a categoria que aparecerá o arquivo no menu do cliente.</h4>
-    <div class="botoes-dialog">
-      <button mat-flat-button color="primary" (click)="dialogRef.close(data.cancel)">Ok</button>
-    </div>
-  </div>
-}
-@if (data.mensagem == 'erroClienteUnico') {
-  <div class="popup-error">
-    <h4>Só é possível enviar arquivo para um único cliente e seus usuários</h4>
     <div class="botoes-dialog">
       <button mat-flat-button color="primary" (click)="dialogRef.close(data.cancel)">Ok</button>
     </div>

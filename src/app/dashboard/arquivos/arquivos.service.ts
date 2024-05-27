@@ -9,7 +9,7 @@ export class ArquivosService {
 
   constructor(private http: HttpClient) { }
 
-  buscarArquivos() {
+  async buscarArquivos() {
     const result = this.http.get<any>(`${environment.api}/arquivos`).toPromise();
     return result;
   }

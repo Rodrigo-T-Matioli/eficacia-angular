@@ -13,11 +13,6 @@ import { ArquivosService } from './arquivos/arquivos.service';
 import { AuthService } from './auth/auth.service';
 import { UsuarioService } from './usuario/usuario.service';
 
-export interface Section {
-  name: string;
-  updated: Date;
-}
-
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -29,26 +24,27 @@ export interface Section {
     MatMenuModule,
     MatIconModule,
     MatButtonModule,
+    DatePipe,
     MatCardModule,
     MatChipsModule,
     MatListModule,
     MatFormFieldModule,
     MatInputModule,
-    DatePipe,
   ],
 })
 
 export class DashboardComponent implements OnInit {
   // private breakpointObserver = inject(BreakpointObserver);
-  arquivosDocumentos: any;
+  arquivosDocumentos: any = undefined;
   arquivosCobrancas: any;
-  usuarioId: any;
+  usuarioId: any = undefined;
   usuario = {
-    nome: '',
-    email: '',
-    endereco: '',
-    telefone: ''
+    nome: undefined,
+    email: undefined,
+    endereco: undefined,
+    telefone: undefined
   }
+  recarregar: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -56,54 +52,26 @@ export class DashboardComponent implements OnInit {
     private arquivosService: ArquivosService,
     ) { }
 
-  ngOnInit(): void {
-    this.cargarUsuario()
+  async ngOnInit() {
+    await this.carregarUsuario();
+    // this.recarregarPagina();
+    if (window.localStorage) {
+      if (!localStorage.getItem('reload')) {
+          localStorage['reload'] = true;
+          window.location.reload();
+      } else {
+          localStorage.removeItem('reload');
+      }
+    }
   }
 
-  cargarUsuario(): void {
-    this.authService.getUser().then(
+  async carregarUsuario() {
+    await this.authService.getUser().then(
       (data: any) => {
-        this.usuarioService.buscarUsuario(data.id).then(
-          (data) => {
-              this.usuario = data;
-              this.usuarioId = data.id;
-              this.cargarArquivos(this.usuarioId)
-          },
-          err => {
-              console.log(err);
-          }
-      );
-      },
-      err => {
-          console.log(err);
-      }
-    );
-  }
-
-  cargarArquivos(id: number): void {
-    let documentos: any = [{
-      nome: '',
-      arquivo_completo: '',
-      createdAt: Date
-    }];
-    let cobrancas: any = [{
-      nome: '',
-      arquivo_completo: '',
-      createdAt: Date
-    }];
-    this.arquivosService.buscarArquivos().then(
-      (data) => {
-        for (let arq of data){
-          if (arq.usuario && arq.usuario.id === id && arq.categoria.id === 2){
-            documentos.push(arq);
-          }
-          if (arq.usuario && arq.usuario.id === id && arq.categoria.id === 1){
-            cobrancas.push(arq);
-          }
+        if (data) {
+          this.usuarioId = data.id;
+          this.buscarUsuario(data);
         }
-        this.arquivosDocumentos = documentos.slice(-2).reverse();
-        this.arquivosCobrancas = cobrancas.slice(-2).reverse();
-        console.log()
       },
       err => {
           console.log(err);
@@ -111,57 +79,41 @@ export class DashboardComponent implements OnInit {
     );
   }
 
-  // getClientes(): void {
-  //   this.clientesService.getAll().subscribe((clientes) => (this.clientes = clientes))
-  // }
+  async buscarUsuario( data: any ) {
+    await this.usuarioService.buscarUsuario(data.id).then(
+      (data) => {
+          this.usuario = data;
+          this.cargarArquivos(this.usuarioId)
+      },
+      err => {
+          console.log(err);
+      }
+  );
+  }
 
-  /** Based on the screen size, switch from standard to one column per row */
-  // documentos = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
-  //   map(({ matches }) => {
-  //     if (matches) {
-  //       return [
-  //         { title: 'Documentos', subtitulo: 'Últimos documentos', cols: 1, rows: 1 },
-  //         { title: 'Cobranças empresariais', subtitulo: 'Últimas cobranças', cols: 1, rows: 1 }
-  //       ];
-  //     }
-
-  //     return [
-  //       { title: 'Documentos', subtitulo: 'Últimos documentos', cols: 1, rows: 1 },
-  //       { title: 'Cobranças empresariais', subtitulo: 'Últimas cobranças', cols: 1, rows: 1 }
-  //     ];
-  //   })
-  // );
-
-  // perfil = {
-  //   nome: 'Rodrigo Tammaro Matioli',
-  //   email: 'digotammaro@gmail.com',
-  //   endereco: 'Rua José de Oliveira, 270',
-  //   telefone: '11969203819'
-  // };
-
-  // folders: Section[] = [
-  //   {
-  //     name: 'Balanço Patrimonial',
-  //     updated: new Date('1/1/16'),
-  //   },
-  //   {
-  //     name: 'Demonstração do Resultado do Exercício (DRE)',
-  //     updated: new Date('1/17/16'),
-  //   }
-  // ];
-
-  // notes: Section[] = [
-  //   {
-  //     name: 'Nota Fiscal de Compra',
-  //     updated: new Date('2/20/16'),
-  //   },
-  //   {
-  //     name: 'Guia de Recolhimento do FGTS',
-  //     updated: new Date('1/18/16'),
-  //   },
-  // ];
-
-  // console(){
-  //   console.log('show')
-  // }
+  async cargarArquivos(id: number) {
+    let documentos: any[] = [];
+    let cobrancas: any[] = [];
+    await this.arquivosService.buscarArquivos().then(
+      (data) => {
+        if (data) {
+          for (let arq of data){
+            if (arq.usuario && arq.usuario.id === id && arq.categoria.id === 2){
+              documentos.push(arq);
+            }
+            if (arq.usuario && arq.usuario.id === id && arq.categoria.id === 1){
+              cobrancas.push(arq);
+            }
+          }
+          this.arquivosDocumentos = documentos.slice(-2).reverse();
+          console.log('arquivosDocumentos: ', this.arquivosDocumentos)
+          this.arquivosCobrancas = cobrancas.slice(-2).reverse();
+          console.log('arquivosCobrancas: ', this.arquivosCobrancas)
+        }
+      },
+      err => {
+          console.log(err);
+      }
+    );
+  }
 }

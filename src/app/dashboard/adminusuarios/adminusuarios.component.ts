@@ -63,6 +63,7 @@ export class AdminusuariosComponent {
   clientesSelecionado: UsuariosSelecionados[] = [];
   clientesSelecionadoDesassociar: UsuariosSelecionados[] = [];
   usuarioDesassociar: UsuariosSelecionados[] = [];
+  usuarioId: any;
   usuarios: Usuarios[] = [];
   usuariosPrincipal: Usuarios[] = [];
   usuariosSelecionado: Usuarios[] = [];
@@ -78,7 +79,8 @@ export class AdminusuariosComponent {
   ) { }
 
   ngOnInit(): void {
-    // this.carregarUsuario();
+    this.usuarioId = this.authService.getUser();
+    this.carregarUsuario();
     this.carregarCliente();
   }
 
@@ -93,35 +95,38 @@ export class AdminusuariosComponent {
     )
   }
 
-  // carregarUsuario(): void {
-  //   const user = this.authService.getUser();
-  //   if (user) {
-  //       this.usuarioService.buscarUsuarios().then(
-  //           (data) => {
-  //             console.log('DATA: ', data)
-  //             this.usuariosPrincipal = data;
-  //               for (let arq of data){
-  //                 if (arq.cliente && arq.cliente.razaoSocial){
-  //                   // this.clientes.push(arq.cliente);
-  //                 } else {
-  //                   this.usuarios.push({id: arq.id, nome: arq.nome, email: arq.email, status: arq.status})
-  //                 }
-  //               }
-  //               // const setCliente = new Set();
-  //               // const filterCliente = this.clientes.filter((cliente) => {
-  //               //   const duplicatedCliente = setCliente.has(cliente.id);
-  //               //   setCliente.add(cliente.id);
-  //               //   return !duplicatedCliente;
-  //               // });
-  //               // this.clientes = filterCliente;
-  //               // console.log('Usuários: ', this.usuarios);
-  //           },
-  //           err => {
-  //               console.log(err);
-  //           }
-  //       );
-  //   }
-  // }
+  async carregarUsuario() {
+    await this.authService.getUser().then(
+      (data: any) => {
+        if (data) {
+          this.usuarioId = data.id;
+          this.buscarUsuario();
+        }
+      },
+      err => {
+          console.log(err);
+      }
+    );
+  }
+
+  buscarUsuario(): void {
+    this.usuarioService.buscarUsuarios().then(
+      (data) => {
+        console.log('DATA: ', data)
+        this.usuariosPrincipal = data;
+          for (let arq of data){
+            if (arq.cliente && arq.cliente.razaoSocial){
+              // this.clientes.push(arq.cliente);
+            } else {
+              this.usuarios.push({id: arq.id, nome: arq.nome, email: arq.email, status: arq.status})
+            }
+          }
+      },
+      err => {
+          console.log(err);
+      }
+    );
+  }
 
   changeClienteValue() {
     this.usuarioDesassociar = Object.values(this.clientesSelecionadoDesassociar);
@@ -138,7 +143,10 @@ export class AdminusuariosComponent {
         }
         const dadosCliente$ = this.http.patch(`${environment.api}/usuarios/${Object.values(this.usuariosSelecionado)[0]}`, cliente);
         dadosCliente$.subscribe((response) => {
-          console.log('ENTROU', response);
+          if (response) {
+            this.mensagem = 'associado';
+            this.openDialog();
+          }
         });
       } else {
         this.mensagem = 'faltaUsuario';
@@ -175,7 +183,7 @@ export class AdminusuariosComponent {
     this.usuarioService.alterarUsuarios(event, dados).then(
       (data) => {
         this.usuariosPrincipal = [];
-        // this.carregarUsuario();
+        this.carregarUsuario();
       },
       err => {
           console.log(err);
@@ -190,7 +198,7 @@ export class AdminusuariosComponent {
     this.usuarioService.alterarUsuarios(event, dados).then(
       (data) => {
         this.usuariosPrincipal = [];
-        // this.carregarUsuario();
+        this.carregarUsuario();
       },
       err => {
           console.log(err);

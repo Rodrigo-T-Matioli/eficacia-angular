@@ -7,12 +7,12 @@
   </mat-card-header>
   <div class="example-container">
     <div class="area-upload">
-      <h4>Selecione para qual cliente / usuários enviar o arquivo</h4>
+      <h4>Selecione para qual cliente</h4>
       <mat-form-field class="select">
         <mat-label>Selecionar cliente</mat-label>
-        <mat-select [(ngModel)]="usuariosSelecionado" name="usuarios" multiple>
-          @for (usuario of usuarios; track usuario) {
-            <mat-option [value]="usuario">{{usuario.cliente.razaoSocial}} - {{usuario.nome}}</mat-option>
+        <mat-select [(ngModel)]="clienteSelecionado" name="clientes">
+          @for (cliente of clientes; track cliente) {
+            <mat-option [value]="cliente">{{cliente.razaoSocial}}</mat-option>
           }
         </mat-select>
       </mat-form-field>

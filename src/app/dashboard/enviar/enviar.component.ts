@@ -95,8 +95,8 @@ export class EnviarComponent {
   usuariosEnviados: object[] = [];
   clientes: Cliente[] = [];
   cliente: Cliente[] = [];
-  clienteId: Number | undefined;
-  clienteRazao: String | undefined;
+  clienteId: Object | undefined;
+  clienteRazao: Object | undefined;
   usuarios: any[] = [];
   categorias: any = null;
   categoriasSelecionada: any = undefined;
@@ -170,17 +170,15 @@ export class EnviarComponent {
         if (this.categoriasSelecionada) {
 
           if (this.file) {
-            let clienteRazoes =  Object.values(this.clienteSelecionado)[1];
-            let clienteId = Object.values(this.clienteSelecionado)[0];
-            console.log('clienteRazoes: ', clienteRazoes);
-            console.log('clienteId: ', clienteId);
+            this.clienteRazao =  Object.values(this.clienteSelecionado)[1];
+            this.clienteId = Object.values(this.clienteSelecionado)[0];
             //Pega os usuarios selecionados
             const usuarios = this.usuarioService.buscarUsuarios().then(
               (data) => {
                 console.log('DATA: ', data)
                 this.usuariosEnviados = data;
                   for (let arq of data){
-                    if (arq && arq.cliente && clienteId === arq.cliente.id){
+                    if (arq && arq.cliente && this.clienteId === arq.cliente.id){
                       this.usuarios.push({id: arq.id, nome: arq.nome, email: arq.email})
                     }
                   }
@@ -190,10 +188,6 @@ export class EnviarComponent {
                   console.log(err);
               }
             );
-            const usuariosArray = this.clienteSelecionado;
-            this.usuariosEnviados = usuariosArray;
-            console.log('this.usuariosSelecionado: ', this.clienteSelecionado);
-            console.log('this.usuariosEnviados: ', this.usuariosEnviados);
             this.mensagem = 'correto';
             this.openDialog();
           } else {
@@ -224,7 +218,7 @@ export class EnviarComponent {
       data: {
         clienteId: this.clienteId,
         clienteRazao: this.clienteRazao,
-        usuariosEnviados: this.usuariosEnviados,
+        usuariosEnviados: this.usuarios,
         fileName: this.fileName,
         fileNameValue: this.fileNameValue,
         categoria: categoria,
@@ -240,24 +234,28 @@ export class EnviarComponent {
         formData.set('name',this.file.name);
         formData.set('file', this.file);
         console.log('formData: ', formData);
+        console.log('this.file.name: ', this.file.name);
+        console.log('this.file: ', this.file);
         const upload$ = this.http.post<UploadResponse>(`${environment.api}/uploads`, formData);
         upload$.subscribe((response) => {
           console.log('response: ', response);
-          for (const usuario of this.clienteSelecionado) {
-            const dadosArquivo = {
-              nome: this.fileNameValue,
-              arquivo_completo: response.path,
-              cliente: this.clienteId,
-              categoria: this.categoriasSelecionada.id,
-              usuario: usuario.id
-            }
-            const dadosArquivo$ = this.http.post(`${environment.api}/arquivos`, dadosArquivo);
-            dadosArquivo$.subscribe((response) => {
-              console.log('ENTROU', response);
-            });
-          }
+          // for (const usuario of this.clienteSelecionado) {
+          //   const dadosArquivo = {
+          //     nome: this.fileNameValue,
+          //     arquivo_completo: response.path,
+          //     cliente: this.clienteId,
+          //     categoria: this.categoriasSelecionada.id,
+          //     usuario: usuario.id
+          //   }
+          //   console.log('dadosArquivo: ', dadosArquivo)
+            // const dadosArquivo$ = this.http.post(`${environment.api}/arquivos`, dadosArquivo);
+            // dadosArquivo$.subscribe((response) => {
+            //   console.log('ENTROU', response);
+            // });
+          // }
         });
       } else {
+        this.usuarios = [];
         return
       }
     });

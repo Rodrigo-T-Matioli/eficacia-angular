@@ -175,14 +175,12 @@ export class EnviarComponent {
             //Pega os usuarios selecionados
             const usuarios = this.usuarioService.buscarUsuarios().then(
               (data) => {
-                console.log('DATA: ', data)
                 this.usuariosEnviados = data;
                   for (let arq of data){
                     if (arq && arq.cliente && this.clienteId === arq.cliente.id){
                       this.usuarios.push({id: arq.id, nome: arq.nome, email: arq.email})
                     }
                   }
-                console.log('Usuarios: ', this.usuarios)
               },
               err => {
                   console.log(err);
@@ -233,26 +231,21 @@ export class EnviarComponent {
         const formData = new FormData();
         formData.set('name',this.file.name);
         formData.set('file', this.file);
-        console.log('formData: ', formData);
-        console.log('this.file.name: ', this.file.name);
-        console.log('this.file: ', this.file);
-        const upload$ = this.http.post<UploadResponse>(`${environment.api}/uploads`, formData);
+        const upload$ = this.http.post<UploadResponse>(`${environment.api}/uploads/supabase`, formData);
         upload$.subscribe((response) => {
-          console.log('response: ', response);
-          // for (const usuario of this.clienteSelecionado) {
-          //   const dadosArquivo = {
-          //     nome: this.fileNameValue,
-          //     arquivo_completo: response.path,
-          //     cliente: this.clienteId,
-          //     categoria: this.categoriasSelecionada.id,
-          //     usuario: usuario.id
-          //   }
-          //   console.log('dadosArquivo: ', dadosArquivo)
-            // const dadosArquivo$ = this.http.post(`${environment.api}/arquivos`, dadosArquivo);
-            // dadosArquivo$.subscribe((response) => {
-            //   console.log('ENTROU', response);
-            // });
-          // }
+          for (const usuario of this.usuarios) {
+            const dadosArquivo = {
+              nome: this.fileNameValue,
+              arquivo_completo: response.path,
+              cliente: this.clienteId,
+              categoria: this.categoriasSelecionada.id,
+              usuario: usuario.id
+            }
+            const dadosArquivo$ = this.http.post(`${environment.api}/arquivos`, dadosArquivo);
+            dadosArquivo$.subscribe((response) => {
+              console.log('ENTROU', response);
+            });
+          }
         });
       } else {
         this.usuarios = [];

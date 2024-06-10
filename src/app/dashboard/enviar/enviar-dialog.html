@@ -70,4 +70,12 @@
     <button mat-flat-button color="warn" (click)="dialogRef.close(data.cancel)">Cancel</button>
   </div>
 }
+@if (data.mensagem == 'arquivoEnviado') {
+  <div class="popup-error">
+    <h4>Arquivo gravado com sucesso.</h4>
+    <div class="botoes-dialog">
+      <button mat-flat-button color="primary" (click)="dialogRef.close(data.cancel)">Ok</button>
+    </div>
+  </div>
+}
 

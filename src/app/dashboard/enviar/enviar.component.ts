@@ -243,7 +243,9 @@ export class EnviarComponent {
             }
             const dadosArquivo$ = this.http.post(`${environment.api}/arquivos`, dadosArquivo);
             dadosArquivo$.subscribe((response) => {
-              console.log('ENTROU', response);
+              console.log('dadosArquivo: ', response)
+              this.mensagem = 'arquivoEnviado';
+              this.openDialog();
             });
           }
         });

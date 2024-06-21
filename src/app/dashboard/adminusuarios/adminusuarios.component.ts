@@ -40,6 +40,7 @@ interface Usuarios {
   id: Number,
   nome: String,
   status: String,
+  cliente: Cliente
 }
 
 @Component({
@@ -112,13 +113,15 @@ export class AdminusuariosComponent {
   buscarUsuario(): void {
     this.usuarioService.buscarUsuarios().then(
       (data) => {
-        console.log('DATA: ', data)
+        console.log('Usuarios Principal: ', data)
         this.usuariosPrincipal = data;
           for (let arq of data){
             if (arq.cliente && arq.cliente.razaoSocial){
               // this.clientes.push(arq.cliente);
             } else {
-              this.usuarios.push({id: arq.id, nome: arq.nome, email: arq.email, status: arq.status})
+              if (arq.status === 'A' && !arq.cliente) {
+                this.usuarios.push({id: arq.id, nome: arq.nome, email: arq.email, status: arq.status, cliente: {id: 0, razaoSocial: ''}})
+              }
             }
           }
       },
@@ -132,6 +135,27 @@ export class AdminusuariosComponent {
     this.usuarioDesassociar = Object.values(this.clientesSelecionadoDesassociar);
     // this.usuarioDesassociar = this.clientesSelecionadoDesassociar;
     console.log('changeClienteValue: ', this.usuarioDesassociar[0])
+    let clienteSelecionado: any = this.usuarioDesassociar[0];
+    let usuarioSelecionado: any = [];
+    for (let arq of this.usuariosPrincipal){
+      if (arq && arq.cliente && parseInt(clienteSelecionado) === arq.cliente.id) {
+        usuarioSelecionado.push(arq);
+      }
+    }
+    this.usuarioDesassociar = usuarioSelecionado;
+    // let usuariosCliente = this.usuariosPrincipal.map((item: any) => {
+    //   if (item && item.cliente && this.usuarioDesassociar[0] === item.cliente.id) {
+    //     const newItem = {
+    //       id: item.id,
+    //       nome: item.nome
+    //     };
+    //     return newItem;
+    //   } else {
+    //     return;
+    //   }
+    // });
+    console.log('DATA: ', this.usuariosPrincipal)
+    console.log('Filtrado: ', usuarioSelecionado)
   }
 
   onAssocCliente(): void {
@@ -171,7 +195,9 @@ export class AdminusuariosComponent {
 
     dialogRef.closed.subscribe(result => {
       if (result === 'ok') {
-        console.log('Ok', result);
+        window.location.reload();
+      } else {
+        return;
       }
     });
   }
@@ -184,6 +210,7 @@ export class AdminusuariosComponent {
       (data) => {
         this.usuariosPrincipal = [];
         this.carregarUsuario();
+        window.location.reload();
       },
       err => {
           console.log(err);
@@ -199,6 +226,7 @@ export class AdminusuariosComponent {
       (data) => {
         this.usuariosPrincipal = [];
         this.carregarUsuario();
+        window.location.reload();
       },
       err => {
           console.log(err);

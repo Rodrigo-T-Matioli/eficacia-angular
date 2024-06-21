@@ -1,11 +1,52 @@
 @if (usuarioId) {
   <div class="grid-container">
+    <mat-grid-list cols="2" rowHeight="300px">
+      <mat-grid-tile colspan="1" rowspan="1">
+        <mat-card class="dashboard-card">
+          <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>Documentos</mat-card-title>
+            <mat-card-subtitle>Últimos documentos</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            @for (arquivo of arquivosDocumentos; track arquivo) {
+              <section>
+                <div matListItemTitle>{{arquivo.nome}}</div>
+                <div matListItemLine>{{arquivo.createdAt | date}}</div>
+                <a mat-flat-button color="primary" class="align-right" (click)="getArquivo(arquivo.arquivo_completo)">Baixar</a>
+              </section>
+              <mat-divider></mat-divider>
+            }
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="1" rowspan="1">
+        <mat-card class="dashboard-card">
+          <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <mat-card-title>Cobranças</mat-card-title>
+            <mat-card-subtitle>Últimas cobranças</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            @for (arquivo of arquivosCobrancas; track arquivo) {
+              <section>
+                <div matListItemTitle>{{arquivo.nome}}</div>
+                <div matListItemLine>{{arquivo.createdAt | date}}</div>
+                <a mat-flat-button color="primary" class="align-right" (click)="getArquivo(arquivo.arquivo_completo)">Baixar</a>
+              </section>
+              <mat-divider></mat-divider>
+            }
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
     <mat-grid-list cols="2" rowHeight="340px">
       <mat-grid-tile colspan="2" rowspan="1">
         <mat-card class="dashboard-card">
           <mat-card-header>
             <div mat-card-avatar class="example-header-image"></div>
-            <mat-card-title>Usuário</mat-card-title>
+            <mat-card-title>Empresa</mat-card-title>
+            <mat-card-subtitle>Advocacia Guimarães</mat-card-subtitle>
           </mat-card-header>
           <div class="example-container">
             <mat-form-field appearance="fill" class="campo">

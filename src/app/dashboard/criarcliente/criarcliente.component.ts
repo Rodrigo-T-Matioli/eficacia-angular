@@ -77,7 +77,14 @@ export class CriarclienteComponent implements OnInit {
       if (this.cliente.endereco) {
         const dadosCliente$ = this.http.post(`${environment.api}/clientes`, this.cliente);
         dadosCliente$.subscribe((response) => {
-          console.log('ENTROU', response);
+          console.log('Post criado: ', response)
+          if (response) {
+            this.mensagem = 'criadoSucesso';
+            this.openDialog();
+          } else {
+            this.mensagem = 'erroCriar';
+            this.openDialog();
+          }
         });
       } else {
         this.mensagem = 'faltaEndereco';

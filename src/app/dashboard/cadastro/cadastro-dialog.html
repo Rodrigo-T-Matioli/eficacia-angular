@@ -1,0 +1,16 @@
+@if (data.mensagem == 'usuarioCriado') {
+  <div class="popup-error">
+    <h4>Usuário criado com sucesso.</h4>
+    <div class="botoes-dialog">
+      <button mat-flat-button color="primary" (click)="dialogRef.close()">Ok</button>
+    </div>
+  </div>
+}
+@if (data.mensagem == 'usuarioErro') {
+  <div class="popup-error">
+    <h4>Tem certeza que deseja excluir o arquivo?</h4>
+    <div class="botoes-dialog">
+      <button mat-flat-button color="primary" (click)="dialogRef.close()">Ok</button>
+    </div>
+  </div>
+}

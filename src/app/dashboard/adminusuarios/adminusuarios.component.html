@@ -54,7 +54,11 @@
           </mat-select>
         </mat-form-field>
         @for (usuario of usuarioDesassociar; track usuario) {
-          <p>{{usuario.id}}</p>
+          <section>
+            <div matListItemTitle>{{usuario.nome}}</div>
+            <a mat-flat-button color="primary"  class="align-right" href="{{usuario.id}}" target="_blank">Desassociar</a>
+          </section>
+          <mat-divider></mat-divider>
         }
     </mat-tab>
   </mat-tab-group>

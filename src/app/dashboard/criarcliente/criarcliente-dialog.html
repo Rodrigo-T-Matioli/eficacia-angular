@@ -14,3 +14,19 @@
     </div>
   </div>
 }
+@if (data.mensagem == 'erroCriar') {
+  <div class="popup-error">
+    <h4>Erro ao criar o cliente, tente novamente por favor.</h4>
+    <div class="botoes-dialog">
+      <button mat-flat-button color="primary" (click)="dialogRef.close(data.cancel)">Ok</button>
+    </div>
+  </div>
+}
+@if (data.mensagem == 'criadoSucesso') {
+  <div class="popup-error">
+    <h4>Cliente criado com sucesso!</h4>
+    <div class="botoes-dialog">
+      <button mat-flat-button color="primary" (click)="dialogRef.close(data.cancel)">Ok</button>
+    </div>
+  </div>
+}
